@@ -1,6 +1,6 @@
 # Weather
 
-> Shows the weather in selected cities.
+> This application shows the weather in selected cities.
 
 ## Build Setup
 
