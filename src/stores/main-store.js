@@ -1,19 +1,22 @@
-import { reactive, ref } from 'vue';
+import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import axios from 'axios';
 
+let cachedCities = localStorage.getItem('cities') ?? [];
+
+if (typeof cachedCities === 'string') {
+  cachedCities = JSON.parse(cachedCities);
+}
+
 export const useMainStore = defineStore('mainStore', () => {
-  const id = ref(0);
-  const cities = ref([]);
+  const cities = ref( cachedCities);
 
   function getWeather(weather) {
-    weather.idCity = id.value;
     weather.show = false;
     weather.weather[0].icon = getIcon(weather.weather[0].icon);
     weather.date = new Date().toLocaleString();
     cities.value.push(weather);
-    console.log(cities.value);
-    increment();
+    localStorage.setItem('cities', JSON.stringify(cities.value));
   }
 
   function getIcon(value) {
@@ -21,21 +24,23 @@ export const useMainStore = defineStore('mainStore', () => {
   }
 
   function deleteCityById(id) {
-    const index = cities.value.findIndex((item) => item.idCity === id);
+    const index = cities.value.findIndex((item) => item.id === id);
     cities.value.splice(index, 1);
+    localStorage.setItem('cities', JSON.stringify(cities.value));
   }
 
   function showControl(id) {
-    const index = cities.value.findIndex((item) => item.idCity === id);
+    const index = cities.value.findIndex((item) => item.id === id);
 
     cities.value[index].show = cities.value[index].show === false;
   }
 
   function refreshCity(weather) {
-    const index = cities.value.findIndex((item) => item.idCity === weather.idCity);
+    const index = cities.value.findIndex((item) => item.id === weather.id);
     weather.weather[0].icon = getIcon(weather.weather[0].icon);
     weather.date = new Date().toLocaleString();
     cities.value.splice(index, 1, weather);
+    localStorage.setItem('cities', JSON.stringify(cities.value));
   }
 
   async function onAdd(city) {
@@ -44,24 +49,19 @@ export const useMainStore = defineStore('mainStore', () => {
       const weather = response.data;
       getWeather(weather);
     } catch (err) {
-      alert('There is no such city in the database!')
+      alert('There is no such city in the database!');
     }
   }
 
   async function onRefresh(obj) {
     const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${obj.name}&units=metric&appid=${import.meta.env.VITE_APP_ID}`);
     const weather = response.data;
-    weather.idCity = obj.idCity;
     weather.show = obj.show;
-    refreshCity(weather)
+    refreshCity(weather);
   }
 
   function onActive(id) {
-    showControl(id)
-  }
-
-  function increment() {
-    id.value++;
+    showControl(id);
   }
 
   return {onAdd, onRefresh, onActive, deleteCityById, cities};

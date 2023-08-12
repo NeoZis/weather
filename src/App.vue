@@ -1,8 +1,7 @@
 <script setup>
-import weatherImg from '@/assets/weather.png';
-
 import { ref } from 'vue';
 
+import weatherImg from '@/assets/weather.png';
 import City from '@/components/City.vue';
 import { useMainStore } from '@/stores/main-store';
 
@@ -20,7 +19,7 @@ async function addCity() {
 <template>
   <div>
     <header>
-      <img class="header-image" :src="weatherImg" alt="">
+      <img class="header-image" :src="weatherImg" alt="header icon">
       <p class="main-title">Weather App</p>
       <div class="add-city">
         <input type="text" v-model="cityName">

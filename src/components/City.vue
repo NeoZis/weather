@@ -1,8 +1,8 @@
 <template>
   <div class="cities">
     <ul>
-      <li v-for="city in cities" :key="city.idCity">
-        <div class="city" :class="{ show_more: city.show }" @click="onActive(city.idCity)">
+      <li v-for="city in cities" :key="city.id">
+        <div class="city" :class="{ show_more: city.show }" @click="onActive(city.id)">
           <div class="info">
             <h2>{{ city.name }}</h2>
             <p v-if="!city.show" class="temp"> {{ city.main.temp }} &deg;C</p>
@@ -19,10 +19,10 @@
           </div>
           <div class="icon">
             <div class="delete">
-              <img :src="refreshImg" alt="" @click.stop="onRefresh(city)">
-              <img :src="cancelImg" alt="" @click.stop="onDelete(city.idCity)">
+              <img :src="refreshImg" alt="refresh weather for city" @click.stop="onRefresh(city)">
+              <img :src="cancelImg" alt="delete city" @click.stop="onDelete(city.id)">
             </div>
-            <img class="weather-icon" :src=city.weather[0].icon>
+            <img class="weather-icon" :src=city.weather[0].icon alt="weather icon">
           </div>
         </div>
       </li>
