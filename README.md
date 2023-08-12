@@ -1,22 +1,32 @@
-# Weather
+# weather
 
 > This application shows the weather in selected cities.
 
-## Build Setup
+## Technologies
 
-``` bash
-# install dependencies
-$ npm install
+* Vue 3
+* Pinia
 
-# serve with hot reload at localhost:3000
-$ npm run dev
+## Project Setup
 
-# build for production and launch server
-$ npm run build
-$ npm start
-
-# generate static project
-$ npm run generate
+1. Copy environment variables file and use your own api key from https://api.openweathermap.org
+```shell
+cp .env.example .env
 ```
 
-For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).
+2. Install npm dependencies
+```shell
+npm install
+```
+
+### Compile and Hot-Reload for Development
+
+```shell
+npm run dev
+```
+
+### Compile and Minify for Production
+
+```sh
+npm run build
+```
