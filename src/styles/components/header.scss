@@ -1,0 +1,17 @@
+.app-header {
+  height: 70px;
+  width: 100vw;
+  background-color: rgba(127, 182, 255, 0.979);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  &__image {
+    width: 60px;
+  }
+
+  &__title {
+    font-size: 30px;
+    font-family: 'Courier New', Courier, monospace;
+  }
+}

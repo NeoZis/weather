@@ -1,33 +1,21 @@
 <script setup>
-import { ref } from 'vue';
+import { storeToRefs } from 'pinia';
 
-import weatherImg from '@/assets/weather.png';
-import City from '@/components/City.vue';
 import { useMainStore } from '@/stores/main-store';
+
+import WeatherCard from '@/components/WeatherCard.vue';
+import AppHeader from '@/components/AppHeader.vue';
 
 const store = useMainStore();
 
-const cityName = ref('');
-const {onAdd} = store;
-
-async function addCity() {
-  await onAdd(cityName.value);
-  cityName.value = '';
-}
+const { cities } = storeToRefs(store);
 </script>
 
 <template>
   <div>
-    <header>
-      <img class="header-image" :src="weatherImg" alt="header icon">
-      <p class="main-title">Weather App</p>
-      <div class="add-city">
-        <input type="text" v-model="cityName">
-        <button type="button" class="btn btn-success" @click="addCity">Add City</button>
-      </div>
-    </header>
-    <div class="cities">
-      <City/>
+    <app-header :store="store"/>
+    <div class="cards">
+      <weather-card v-for="city in cities" :key="city.id" :city="city"/>
     </div>
   </div>
 </template>
