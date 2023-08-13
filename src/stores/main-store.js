@@ -1,39 +1,40 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import { Api } from '@/services/Api';
+import { WeatherItem } from '@/models/weather-item';
 
-let cachedCities = localStorage.getItem('cities') ?? [];
-
-if (typeof cachedCities === 'string') {
-  cachedCities = JSON.parse(cachedCities);
-}
+const cachedCities = localStorage.getItem('cities') ? JSON.parse(localStorage.getItem('cities')) : [];
 
 export const useMainStore = defineStore('mainStore', () => {
   const cities = ref(cachedCities);
 
-  function getWeather(weather) {
-    weather.weather[0].icon = getIcon(weather.weather[0].icon);
-    weather.date = new Date().toLocaleString();
-    cities.value.push(weather);
-    localStorage.setItem('cities', JSON.stringify(cities.value));
+  if (cities.value.length) {
+    cities.value.forEach((item) => onRefresh(item.name));
   }
 
-  function getIcon(value) {
-    return `http://www.openweathermap.org/img/wn/${value}@2x.png`;
+  function addWeatherItem(weather) {
+    cities.value.push(new WeatherItem(weather));
+
+    cacheCities();
+  }
+
+  function cacheCities() {
+    localStorage.setItem('cities', JSON.stringify(cities.value));
   }
 
   function deleteCityById(id) {
     const index = cities.value.findIndex((item) => item.id === id);
     cities.value.splice(index, 1);
-    localStorage.setItem('cities', JSON.stringify(cities.value));
+
+    cacheCities();
   }
 
   function refreshCity(weather) {
     const index = cities.value.findIndex((item) => item.id === weather.id);
-    weather.weather[0].icon = getIcon(weather.weather[0].icon);
-    weather.date = new Date().toLocaleString();
-    cities.value.splice(index, 1, weather);
-    localStorage.setItem('cities', JSON.stringify(cities.value));
+
+    cities.value.splice(index, 1, new WeatherItem(weather));
+
+    cacheCities();
   }
 
   async function onAdd(city) {
@@ -43,7 +44,7 @@ export const useMainStore = defineStore('mainStore', () => {
       if (cities.value.some((city) => city.id === weatherData.id)) {
         alert('You already have this city in the list!');
       } else {
-        getWeather(weatherData);
+        addWeatherItem(weatherData);
       }
     }
   }

@@ -27,16 +27,16 @@ async function refreshInfo() {
       <h2>{{ city.name }}</h2>
       <template v-if="showExtraInfo">
         <div class="weather-card__extra-info">
-          <span>Temperature: {{ city.main.temp }} &deg;C</span>
-          <span>Pressure: {{ city.main.pressure }} hPa</span>
-          <span>Humidity: {{ city.main.humidity }} %</span>
-          <span>Weather now: {{ city.weather[0].description }}</span>
-          <span>Wind speed: {{ city.wind.speed }} meter/sec</span>
-          <span>Cloudiness: {{ city.clouds.all }} %</span>
+          <span>Temperature: {{ city.dataWithUnits.temperature }}</span>
+          <span>Pressure: {{ city.dataWithUnits.pressure }}</span>
+          <span>Humidity: {{ city.dataWithUnits.humidity }}</span>
+          <span>Weather now: {{ city.description }}</span>
+          <span>Wind speed: {{ city.dataWithUnits.windSpeed }}</span>
+          <span>Cloudiness: {{ city.dataWithUnits.clouds }}</span>
         </div>
       </template>
       <template v-else>
-        <p class="weather-card__temperature">{{ city.main.temp }} &deg;C</p>
+        <p class="weather-card__temperature">{{ city.dataWithUnits.temperature }}</p>
         <p class="weather-card__time">Updated at: {{ city.date }}</p>
       </template>
     </div>
@@ -45,7 +45,7 @@ async function refreshInfo() {
         <img :src="refreshImg" alt="refresh weather for city" @click.stop="refreshInfo">
         <img :src="cancelImg" alt="delete city" @click.stop="onDelete(city.id)">
       </div>
-      <img class="weather-card__icon" :src=city.weather[0].icon alt="weather icon">
+      <img class="weather-card__icon" :src=city.icon alt="weather icon">
     </div>
   </div>
 </template>
