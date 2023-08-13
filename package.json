@@ -1,8 +1,8 @@
 {
-  "name": "weather1",
+  "name": "weather",
   "description": "The application shows the weather in selected cities.",
   "author": "Andrii Porodnov",
-  "version": "0.0.0",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "dev": "vite",
