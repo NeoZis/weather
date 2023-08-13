@@ -1,0 +1,21 @@
+.add-city {
+  display: flex;
+  align-items: center;
+
+  &__btn {
+    height: 50px;
+    border-radius: 2%;
+    border: none;
+    margin-left: 3px;
+    cursor: pointer;
+  }
+
+  &__input {
+    height: 50px;
+    width: 400px;
+    padding: 0;
+    border-radius: 2%;
+    font-size: 20px;
+    border: none;
+  }
+}
